@@ -146,38 +146,41 @@ namespace InstaBot.Service
             foreach (var group in allGroups)
             {
                 var photosForPost = await _api.GetUserMediaAsync(group, PaginationParameters.MaxPagesToLoad(0));
-                var firstPhotoForPost = photosForPost.Value.FirstOrDefault();
-
-                if (firstPhotoForPost.MediaType == InstaMediaType.Video)
-                    break;
-
-                PhotoPost photoPost = new PhotoPost { Caption = firstPhotoForPost.Caption?.Text };
-                if (firstPhotoForPost.Images.Any())
+                if (photosForPost.Value != null)
                 {
-                    photoPost.PhotoURI = firstPhotoForPost.Images.FirstOrDefault().URI;
-                }
-                else
-                {
-                    photoPost.PhotoURI = firstPhotoForPost.Carousel.FirstOrDefault().Images.FirstOrDefault().URI;
-                }
+                    var firstPhotoForPost = photosForPost.Value.FirstOrDefault();
 
-                var isPhotoPosted = await PostPhotoAsync(queue, db, photoPost);
+                    if (firstPhotoForPost.MediaType == InstaMediaType.Video)
+                        break;
 
-                if (isPhotoPosted)
-                {
-                    break;
-                }
-                else
-                {
-                    if (allGroups.LastOrDefault() == group)
+                    PhotoPost photoPost = new PhotoPost { Caption = firstPhotoForPost.Caption?.Text };
+                    if (firstPhotoForPost.Images.Any())
                     {
-                        queue.LastActivity = DateTime.UtcNow;
-                        db.UserActivityHistories.Add(new UserActivityHistory
+                        photoPost.PhotoURI = firstPhotoForPost.Images.FirstOrDefault().URI;
+                    }
+                    else
+                    {
+                        photoPost.PhotoURI = firstPhotoForPost.Carousel.FirstOrDefault().Images.FirstOrDefault().URI;
+                    }
+
+                    var isPhotoPosted = await PostPhotoAsync(queue, db, photoPost);
+
+                    if (isPhotoPosted)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if (allGroups.LastOrDefault() == group)
                         {
-                            Queue = queue,
-                            CreatedOn = DateTime.UtcNow
-                        });
-                        await db.SaveChangesAsync();
+                            queue.LastActivity = DateTime.UtcNow;
+                            db.UserActivityHistories.Add(new UserActivityHistory
+                            {
+                                Queue = queue,
+                                CreatedOn = DateTime.UtcNow
+                            });
+                            await db.SaveChangesAsync();
+                        }
                     }
                 }
             }
