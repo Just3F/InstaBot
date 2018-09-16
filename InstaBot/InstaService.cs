@@ -151,7 +151,7 @@ namespace InstaBot.Service
                     var firstPhotoForPost = photosForPost.Value.FirstOrDefault();
 
                     if (firstPhotoForPost.MediaType == InstaMediaType.Video)
-                        break;
+                        continue;
 
                     PhotoPost photoPost = new PhotoPost { Caption = firstPhotoForPost.Caption?.Text };
                     if (firstPhotoForPost.Images.Any())
@@ -181,6 +181,19 @@ namespace InstaBot.Service
                             });
                             await db.SaveChangesAsync();
                         }
+                    }
+                }
+                else
+                {
+                    if (allGroups.LastOrDefault() == group)
+                    {
+                        queue.LastActivity = DateTime.UtcNow;
+                        db.UserActivityHistories.Add(new UserActivityHistory
+                        {
+                            Queue = queue,
+                            CreatedOn = DateTime.UtcNow
+                        });
+                        await db.SaveChangesAsync();
                     }
                 }
             }
