@@ -231,13 +231,12 @@ namespace InstaBot.Service
         {
             if (_api != null && _api.IsUserAuthenticated)
                 return true;
-
+            var userSession = new UserSessionData {UserName = username, Password = password};
             _api = InstaApiBuilder.CreateBuilder()
-                .SetUser(new UserSessionData { UserName = username, Password = password })
+                .SetUser(userSession)
                 .UseLogger(new DebugLogger(LogLevel.Exceptions)).Build();
 
             var loginRequest = await _api.LoginAsync();
-
             if (loginRequest.Succeeded)
                 Console.WriteLine("Logged in!");
             else
