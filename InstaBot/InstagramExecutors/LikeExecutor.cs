@@ -1,14 +1,13 @@
-﻿using System;
-using System.Linq;
-using InstaBot.Service.DataBaseModels;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using InstaBot.Service.DataBaseModels;
+using InstaBot.Service.Models;
 using InstaSharper.API;
 using InstaSharper.Classes;
-using Microsoft.EntityFrameworkCore.Internal;
 
-namespace InstaBot.Service.Models
+namespace InstaBot.Service.InstagramExecutors
 {
-    public class LikeExecutor : IInstagramExecutor
+    public class LikeExecutor : BaseExecutor, IInstagramExecutor
     {
         public async Task Execute(Queue queue, InstaBotContext db, IInstaApi api)
         {
@@ -19,14 +18,8 @@ namespace InstaBot.Service.Models
             if (instaTagFeed.Succeeded && lastPost != null)
             {
                 await api.LikeMediaAsync(lastPost.InstaIdentifier);
-                await UpdateDBAsync(queue, db);
+                await UpdateQueueLastActivityAsync(queue, db);
             }
-        }
-
-        private async Task UpdateDBAsync(Queue queue, InstaBotContext db)
-        {
-            queue.LastActivity = DateTime.UtcNow;
-            await db.SaveChangesAsync();
         }
     }
 }
