@@ -37,7 +37,7 @@ namespace InstaBot.Service
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
-                            throw;
+                            //throw;
                         }
                     }
                 }
