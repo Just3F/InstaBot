@@ -1,4 +1,5 @@
 ﻿using InstaBot.Service.Enums;
+using InstaBot.Service.InstagramExecutors;
 
 namespace InstaBot.Service.Models
 {
@@ -13,7 +14,8 @@ namespace InstaBot.Service.Models
                 case QueueType.LikePhoto:
                     executor = new LikeExecutor();
                     break;
-                case QueueType.PostPhoto:
+                case QueueType.PostMedia:
+                    executor = new PostMediaExecutor();
                     break;
                 case QueueType.FollowUsers:
                     break;

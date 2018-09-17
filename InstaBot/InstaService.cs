@@ -58,7 +58,7 @@ namespace InstaBot.Service
                     {
                         switch (queue.QueueType)
                         {
-                            case QueueType.PostPhoto:
+                            case QueueType.PostMedia:
                                 await ExecuteQueuePostPhotosAsync(queue, db);
                                 break;
                             case QueueType.LikePhoto:
@@ -191,7 +191,7 @@ namespace InstaBot.Service
             var imageURI = photoPost.PhotoURI;
             var success = false;
             var isPhotoAlreadyPosted = db.UserActivityHistories.Any(x =>
-                x.PostedImageURI == imageURI && x.Queue.QueueType == QueueType.PostPhoto);
+                x.PostedImageURI == imageURI && x.Queue.QueueType == QueueType.PostMedia);
 
             if (!isPhotoAlreadyPosted)
             {
