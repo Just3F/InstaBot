@@ -6,6 +6,6 @@ namespace InstaBot.Service.Models
 {
     public interface IInstagramExecutor
     {
-        Task Execute(Queue queue, InstaBotContext db, IInstaApi api);
+        Task Execute(Queue queue, InstaBotContext db);
     }
 }

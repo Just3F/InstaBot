@@ -22,7 +22,7 @@ namespace InstaBot.Service
                 {
                     var activeQueues = await db.Queues
                     .Where(x => x.LastActivity < DateTime.UtcNow - TimeSpan.FromSeconds(x.DelayInSeconds) &&
-                                x.QueueState == QueueState.InProgress)
+                                x.QueueState == QueueState.InProgress && x.IsActive)
                     .Include(x => x.User)
                     .ToListAsync();
 
@@ -30,9 +30,10 @@ namespace InstaBot.Service
                     {
                         try
                         {
-                            IInstaApi api = await InstagramApiFactory.GetInstaApiAsync(new InstagramUser(queue.User.Name, queue.User.Password));
-                            IInstagramExecutor instagramExecutor = InstagramServiceFactory.CreateExecutor(queue.QueueType);
-                            await instagramExecutor.Execute(queue, db, api);
+                            IInstaApi instaApi = await InstagramApiFactory.GetInstaApiAsync(new InstagramUser(queue.User.Name, queue.User.Password));
+                            IInstagramExecutor instagramExecutor = InstagramServiceFactory.CreateExecutor(queue.QueueType, instaApi);
+                            await instagramExecutor.Execute(queue, db);
+                            Console.WriteLine(DateTime.Now);
                         }
                         catch (Exception e)
                         {
