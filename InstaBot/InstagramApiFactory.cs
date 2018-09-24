@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using InstaBot.Service.Models;
@@ -35,7 +37,20 @@ namespace InstaBot.Service
 
         private static async Task<IInstaApi> TryToLoginAsync(InstagramUser user)
         {
+            var address = "217.170.219.6";
+            var port = "41258";
+            var httpHndler = new HttpClientHandler
+            {
+                Proxy = new WebProxy(string.Format("{0}:{1}", address, port), false),
+                UseProxy = true
+                //PreAuthenticate = true,
+                //UseDefaultCredentials = false,
+                //Credentials = new System.Net.NetworkCredential(proxyServerSettings.UserName,
+                //    proxyServerSettings.Password),
+            };
+
             var api = InstaApiBuilder.CreateBuilder()
+                //.UseHttpClientHandler(httpHndler)
                 .SetUser(new UserSessionData { UserName = user.UserName, Password = user.Password })
                 .UseLogger(new DebugLogger(LogLevel.Exceptions)).Build();
             var loginRequest = await api.LoginAsync();

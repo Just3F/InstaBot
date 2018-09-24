@@ -29,8 +29,8 @@ namespace InstaBot.Service.InstagramExecutors
 
                 if (firstMedia != null && firstMedia.MediaType != InstaMediaType.Video && !IsAlreadyPosted(firstMedia.InstaIdentifier, queue.User.Name, db))
                 {
-                    //firstMedia.Caption.Text = "Caption test";
-                    isMediaPosted = await PostMediaAsync(firstMedia);
+                    var caption = GetCaption(queue, firstMedia);
+                    isMediaPosted = await PostMediaAsync(firstMedia, caption);
                 }
 
                 if (isMediaPosted || group.Equals(allGroups.LastOrDefault()))
@@ -43,12 +43,20 @@ namespace InstaBot.Service.InstagramExecutors
             }
         }
 
-        private async Task<bool> PostMediaAsync(InstaMedia media)
+        private string GetCaption(Queue queue, InstaMedia instaMedia)
+        {
+            var caption = "";
+            caption = queue.Notes ?? instaMedia.Caption.Text;
+
+            return caption;
+        }
+
+        private async Task<bool> PostMediaAsync(InstaMedia media, string caption)
         {
             MediaPost mediaPost = GetMediaPost(media);
             InstaImage[] instaImages = LoadImagesAsync(mediaPost.URICollection);
 
-            bool postResult = await UploadPostAsync(instaImages, mediaPost.Caption);
+            bool postResult = await UploadPostAsync(instaImages, caption);
             //TODO delete all loaded images
 
             return postResult;
@@ -106,7 +114,7 @@ namespace InstaBot.Service.InstagramExecutors
 
         private MediaPost GetMediaPost(InstaMedia media)
         {
-            MediaPost mediaPost = new MediaPost { Caption = media.Caption.Text };
+            MediaPost mediaPost = new MediaPost();
             if (media.IsMultiPost)
             {
                 mediaPost.URICollection = media.Carousel.Select(x => x.Images?.FirstOrDefault()?.URI).ToList();
