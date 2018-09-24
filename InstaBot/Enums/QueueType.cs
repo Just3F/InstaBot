@@ -3,7 +3,7 @@
     public enum QueueType
     {
         LikePhoto = 0,
-        PostPhoto = 1,
+        PostMedia = 1,
         FollowUsers = 2
     } 
 }

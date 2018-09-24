@@ -58,7 +58,7 @@ namespace InstaBot.Service
                     {
                         switch (queue.QueueType)
                         {
-                            case QueueType.PostPhoto:
+                            case QueueType.PostMedia:
                                 await ExecuteQueuePostPhotosAsync(queue, db);
                                 break;
                             case QueueType.LikePhoto:
@@ -204,7 +204,7 @@ namespace InstaBot.Service
             var imageURI = photoPost.PhotoURI;
             var success = false;
             var isPhotoAlreadyPosted = db.UserActivityHistories.Any(x =>
-                x.PostedImageURI == imageURI && x.Queue.QueueType == QueueType.PostPhoto);
+                x.PostedImageURI == imageURI && x.Queue.QueueType == QueueType.PostMedia);
 
             if (!isPhotoAlreadyPosted)
             {
@@ -244,13 +244,12 @@ namespace InstaBot.Service
         {
             if (_api != null && _api.IsUserAuthenticated)
                 return true;
-
+            var userSession = new UserSessionData {UserName = username, Password = password};
             _api = InstaApiBuilder.CreateBuilder()
-                .SetUser(new UserSessionData { UserName = username, Password = password })
+                .SetUser(userSession)
                 .UseLogger(new DebugLogger(LogLevel.Exceptions)).Build();
 
             var loginRequest = await _api.LoginAsync();
-
             if (loginRequest.Succeeded)
                 Console.WriteLine("Logged in!");
             else

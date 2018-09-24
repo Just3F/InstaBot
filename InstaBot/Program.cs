@@ -17,7 +17,7 @@ namespace InstaBot.Service
 
         static void Main(string[] args)
         {
-            var instaService = new InstaService { IsEnabled = true, DelayInMilliseconds = 1000 };
+            var instaService = new InstagramBotService { IsEnabled = true, DelayInMilliseconds = 1000 };
 
             new Thread(() => { instaService.Process(); }).Start();
 
