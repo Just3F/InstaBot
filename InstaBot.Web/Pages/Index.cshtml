@@ -1,6 +1,58 @@
 ﻿@page
+@using InstaBot.Common
+@using InstaBot.Common.Enums
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Главная";
 }
-sadas
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Таблица заданий</h3>
+            </div>
+            <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Пользователь</th>
+                        <th scope="col">Тип</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Последняя активность</th>
+                        <th scope="col">Заметки к заданию</th>
+                        <th scope="col">Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach (var s in Model.Queues)
+                    {
+                        <tr>
+                            <th scope="row">@s.User.Name</th>
+                            <td>@(Enum.GetName(typeof(QueueType), s.QueueType))</td>
+                            <td><span class="label label-success">@(Enum.GetName(typeof(QueueState), s.QueueState))</span></td>
+                            <td>@s.LastActivity</td>
+                            <td>@s.LoadId</td>
+                            <td>
+                                <button type="button" class="btn btn-info btn-circle"><i class="lnr lnr-pencil"></i></button>
+                                <button type="button" class="btn btn-danger btn-circle"><i class="lnr lnr-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".table").DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json"
+        }
+    });
+</script>

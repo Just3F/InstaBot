@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using InstaBot.Common;
 using InstaBot.Service.DataBaseModels;
 using InstaSharper.API;
 

@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using InstaBot.Common;
+using InstaBot.Web.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace InstaBot.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
-        {
+        private readonly ApplicationDbContext _dbContext;
 
+        public IndexModel(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public IList<Common.Queue> Queues { get; set; }
+
+        public async Task OnGetAsync()
+        {
+            Queues = await _dbContext.Queues.Include(x=>x.User).ToListAsync();
         }
     }
 }

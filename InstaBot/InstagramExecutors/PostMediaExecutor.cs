@@ -8,7 +8,8 @@ using InstaSharper.Classes;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using InstaBot.Service.Enums;
+using InstaBot.Common;
+using InstaBot.Common.Enums;
 using InstaSharper.Classes.Models;
 
 namespace InstaBot.Service.InstagramExecutors

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InstaBot.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace InstaBot.Service.DataBaseModels
 {

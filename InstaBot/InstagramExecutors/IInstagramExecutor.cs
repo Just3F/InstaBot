@@ -1,8 +1,8 @@
-﻿using InstaBot.Service.DataBaseModels;
-using System.Threading.Tasks;
-using InstaSharper.API;
+﻿using System.Threading.Tasks;
+using InstaBot.Common;
+using InstaBot.Service.DataBaseModels;
 
-namespace InstaBot.Service.Models
+namespace InstaBot.Service.InstagramExecutors
 {
     public interface IInstagramExecutor
     {

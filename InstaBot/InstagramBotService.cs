@@ -1,10 +1,11 @@
 ﻿using InstaBot.Service.DataBaseModels;
-using InstaBot.Service.Enums;
 using InstaBot.Service.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using InstaBot.Common.Enums;
+using InstaBot.Service.InstagramExecutors;
 using InstaSharper.API;
 
 namespace InstaBot.Service

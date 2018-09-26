@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary1\InstaBot.Common.csproj" />
+  </ItemGroup>
+
 </Project>

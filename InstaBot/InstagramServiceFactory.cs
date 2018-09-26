@@ -1,8 +1,8 @@
-﻿using InstaBot.Service.Enums;
+﻿using InstaBot.Common.Enums;
 using InstaBot.Service.InstagramExecutors;
 using InstaSharper.API;
 
-namespace InstaBot.Service.Models
+namespace InstaBot.Service
 {
     public static class InstagramServiceFactory
     {
