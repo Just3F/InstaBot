@@ -5,6 +5,7 @@ using InstaSharper.Classes;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using InstaBot.Common;
 
 namespace InstaBot.Service.InstagramExecutors
 {
@@ -29,7 +30,7 @@ namespace InstaBot.Service.InstagramExecutors
             {
                 await _instaApi.FollowUserAsync(userId);
                 await UpdateQueueLastActivityAsync(queue, db);
-                Console.WriteLine("FollowUserExecutor for " + queue.User.Name);
+                Console.WriteLine("FollowUserExecutor for " + queue.LoginData.Name);
             }
         }
 

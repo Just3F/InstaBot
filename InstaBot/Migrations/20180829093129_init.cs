@@ -49,7 +49,7 @@ namespace InstaBot.Service.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Queues_UserId",
                 table: "Queues",
-                column: "UserId");
+                column: "LoginDataId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

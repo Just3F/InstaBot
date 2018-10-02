@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Queue[0].User)
+                @Html.DisplayNameFor(model => model.Queue[0].LoginData)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Queue[0].QueueType)
@@ -44,7 +44,7 @@
 @foreach (var item in Model.Queue) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.LoginData.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.QueueType)

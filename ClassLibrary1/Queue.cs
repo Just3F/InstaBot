@@ -9,9 +9,9 @@ namespace InstaBot.Common
     {
         [Key]
         public int Id { get; set; }
-        public int UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        public int LoginDataId { get; set; }
+        [ForeignKey("LoginDataId")]
+        public LoginData LoginData { get; set; }
         public QueueType QueueType { get; set; }
         public QueueState QueueState { get; set; }
         public int DelayInSeconds { get; set; }

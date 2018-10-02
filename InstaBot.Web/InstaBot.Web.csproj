@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ClassLibrary1\InstaBot.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
 </Project>

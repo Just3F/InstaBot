@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Identity.Stores">
+      <HintPath>..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.identity.stores\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Identity.Stores.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -41,11 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationRole.cs" />
+    <Compile Include="ApplicationUser.cs" />
     <Compile Include="Enums\QueueState.cs" />
     <Compile Include="Enums\QueueType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queue.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="LoginData.cs" />
     <Compile Include="UserActivityHistory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

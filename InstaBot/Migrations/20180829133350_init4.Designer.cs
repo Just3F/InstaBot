@@ -41,16 +41,16 @@ namespace InstaBot.Service.Migrations
 
                     b.Property<int>("QueueType");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("LoginDataId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("LoginDataId");
 
                     b.ToTable("Queues");
                 });
 
-            modelBuilder.Entity("InstaBot.Service.DataBaseModels.User", b =>
+            modelBuilder.Entity("InstaBot.Service.DataBaseModels.LoginData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,9 +86,9 @@ namespace InstaBot.Service.Migrations
 
             modelBuilder.Entity("InstaBot.Service.DataBaseModels.Queue", b =>
                 {
-                    b.HasOne("InstaBot.Service.DataBaseModels.User", "User")
+                    b.HasOne("InstaBot.Service.DataBaseModels.LoginData", "LoginData")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("LoginDataId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

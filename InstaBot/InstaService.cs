@@ -50,12 +50,12 @@ namespace InstaBot.Service
                 var activeQueues = await db.Queues
                     .Where(x => x.LastActivity < DateTime.UtcNow - TimeSpan.FromSeconds(x.DelayInSeconds) &&
                                 x.QueueState == QueueState.InProgress)
-                    .Include(x => x.User)
+                    .Include(x => x.LoginData)
                     .ToListAsync();
 
                 foreach (var queue in activeQueues)
                 {
-                    if (await LoginAsync(queue.User.Name, queue.User.Password))
+                    if (await LoginAsync(queue.LoginData.Name, queue.LoginData.Password))
                     {
                         switch (queue.QueueType)
                         {
@@ -76,7 +76,7 @@ namespace InstaBot.Service
                     else
                     {
                         //queue.QueueState = QueueState.StoppedWithError;
-                        queue.Notes = "User can not Auth. Check Username and Password.";
+                        queue.Notes = "LoginData can not Auth. Check Username and Password.";
                         await db.SaveChangesAsync();
                     }
                 }

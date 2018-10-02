@@ -19,7 +19,7 @@ namespace InstaBot.Web.Pages
 
         public async Task OnGetAsync()
         {
-            Queues = await _dbContext.Queues.Include(x=>x.User).ToListAsync();
+            Queues = await _dbContext.Queues.Include(x=>x.LoginData).ToListAsync();
         }
     }
 }

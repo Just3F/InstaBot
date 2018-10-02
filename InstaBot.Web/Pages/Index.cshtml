@@ -29,7 +29,7 @@
                     @foreach (var s in Model.Queues)
                     {
                         <tr>
-                            <th scope="row">@s.User.Name</th>
+                            <th scope="row">@s.LoginData.Name</th>
                             <td>@(Enum.GetName(typeof(QueueType), s.QueueType))</td>
                             <td><span class="label label-success">@(Enum.GetName(typeof(QueueState), s.QueueState))</span></td>
                             <td>@s.LastActivity</td>

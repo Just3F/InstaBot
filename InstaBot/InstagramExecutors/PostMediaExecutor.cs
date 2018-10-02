@@ -28,7 +28,7 @@ namespace InstaBot.Service.InstagramExecutors
                 var instaMediaList = await _instaApi.GetUserMediaAsync(group, PaginationParameters.MaxPagesToLoad(0));
                 InstaMedia firstMedia = instaMediaList?.Value?.FirstOrDefault();
 
-                if (firstMedia != null && firstMedia.MediaType != InstaMediaType.Video && !IsAlreadyPosted(firstMedia.InstaIdentifier, queue.User.Name, db))
+                if (firstMedia != null && firstMedia.MediaType != InstaMediaType.Video && !IsAlreadyPosted(firstMedia.InstaIdentifier, queue.LoginData.Name, db))
                 {
                     var caption = GetCaption(queue, firstMedia);
                     isMediaPosted = await PostMediaAsync(firstMedia, caption);
@@ -38,7 +38,7 @@ namespace InstaBot.Service.InstagramExecutors
                 {
                     await UpdateQueueLastActivityAsync(queue, db);
                     await AddFinishedQueuToHistory(firstMedia.InstaIdentifier, queue, db);
-                    Console.WriteLine($"PostMediaExecutor for {queue.User.Name}");
+                    Console.WriteLine($"PostMediaExecutor for {queue.LoginData.Name}");
                     return;
                 }
             }
@@ -136,7 +136,7 @@ namespace InstaBot.Service.InstagramExecutors
 
         private bool IsAlreadyPosted(string id, string userName, InstaBotContext db)
         {
-            return db.UserActivityHistories.Any(x => x.PostedImageURI == id && x.Queue.QueueType == QueueType.PostMedia && x.Queue.User.Name == userName);
+            return db.UserActivityHistories.Any(x => x.PostedImageURI == id && x.Queue.QueueType == QueueType.PostMedia && x.Queue.LoginData.Name == userName);
         }
     }
 }

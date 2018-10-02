@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using InstaBot.Common;
 using InstaBot.Service.DataBaseModels;
 using InstaBot.Service.Models;
 using InstaSharper.API;
@@ -23,7 +24,7 @@ namespace InstaBot.Service.InstagramExecutors
             {
                 await _instaApi.LikeMediaAsync(lastPost.InstaIdentifier);
                 await UpdateQueueLastActivityAsync(queue, db);
-                Console.WriteLine("LikeExecutor for " + queue.User.Name);
+                Console.WriteLine("LikeExecutor for " + queue.LoginData.Name);
             }
         }
     }
