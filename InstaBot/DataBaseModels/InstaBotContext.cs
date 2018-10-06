@@ -11,7 +11,7 @@ namespace InstaBot.Service.DataBaseModels
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=InstaDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=InstaDB2;Trusted_Connection=True;");
         }
     }
 }

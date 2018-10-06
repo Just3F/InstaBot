@@ -15,40 +15,11 @@ namespace InstaBot.Service.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InstaBot.Service.DataBaseModels.Queue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DelayInSeconds");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<DateTime>("LastActivity");
-
-                    b.Property<string>("LoadId");
-
-                    b.Property<string>("Notes");
-
-                    b.Property<int>("QueueState");
-
-                    b.Property<int>("QueueType");
-
-                    b.Property<int>("LoginDataId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LoginDataId");
-
-                    b.ToTable("Queues");
-                });
-
-            modelBuilder.Entity("InstaBot.Service.DataBaseModels.LoginData", b =>
+            modelBuilder.Entity("InstaBot.Common.LoginData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +34,36 @@ namespace InstaBot.Service.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("InstaBot.Service.DataBaseModels.UserActivityHistory", b =>
+            modelBuilder.Entity("InstaBot.Common.Queue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DelayInSeconds");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<DateTime>("LastActivity");
+
+                    b.Property<string>("LoadId");
+
+                    b.Property<int>("LoginDataId");
+
+                    b.Property<string>("Notes");
+
+                    b.Property<int>("QueueState");
+
+                    b.Property<int>("QueueType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoginDataId");
+
+                    b.ToTable("Queues");
+                });
+
+            modelBuilder.Entity("InstaBot.Common.UserActivityHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,17 +82,17 @@ namespace InstaBot.Service.Migrations
                     b.ToTable("UserActivityHistories");
                 });
 
-            modelBuilder.Entity("InstaBot.Service.DataBaseModels.Queue", b =>
+            modelBuilder.Entity("InstaBot.Common.Queue", b =>
                 {
-                    b.HasOne("InstaBot.Service.DataBaseModels.LoginData", "LoginData")
+                    b.HasOne("InstaBot.Common.LoginData", "LoginData")
                         .WithMany()
                         .HasForeignKey("LoginDataId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("InstaBot.Service.DataBaseModels.UserActivityHistory", b =>
+            modelBuilder.Entity("InstaBot.Common.UserActivityHistory", b =>
                 {
-                    b.HasOne("InstaBot.Service.DataBaseModels.Queue", "Queue")
+                    b.HasOne("InstaBot.Common.Queue", "Queue")
                         .WithMany()
                         .HasForeignKey("QueueId")
                         .OnDelete(DeleteBehavior.Cascade);

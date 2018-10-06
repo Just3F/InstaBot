@@ -28,32 +28,63 @@ namespace InstaBot.Service.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(nullable: false),
+                    LoginDataId = table.Column<int>(nullable: false),
                     QueueType = table.Column<int>(nullable: false),
+                    QueueState = table.Column<int>(nullable: false),
                     DelayInSeconds = table.Column<int>(nullable: false),
                     LastActivity = table.Column<DateTime>(nullable: false),
                     LoadId = table.Column<string>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    Notes = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Queues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Queues_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Queues_Users_LoginDataId",
+                        column: x => x.LoginDataId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserActivityHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    QueueId = table.Column<int>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    PostedImageURI = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserActivityHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserActivityHistories_Queues_QueueId",
+                        column: x => x.QueueId,
+                        principalTable: "Queues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Queues_UserId",
+                name: "IX_Queues_LoginDataId",
                 table: "Queues",
                 column: "LoginDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserActivityHistories_QueueId",
+                table: "UserActivityHistories",
+                column: "QueueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "UserActivityHistories");
+
             migrationBuilder.DropTable(
                 name: "Queues");
 

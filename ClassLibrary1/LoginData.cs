@@ -9,9 +9,9 @@ namespace InstaBot.Common
         public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
-
-        public string ApplicationUserId { get; set; }
-        [ForeignKey("ApplicationUser")]
-        public ApplicationUser ApplicationUser { get; set; }
+        //[ForeignKey("UserId")]
+        //public ApplicationUser User { get; set; }
+        //[Column("UserId")]
+        //public string UserId { get; set; }
     }
 }
