@@ -80,7 +80,6 @@
             var loadId = '';
 
             $(".load-id-tags option:selected").each(function (index) {
-                debugger;
                 loadId += (index == 0 ? '' : ' ') + $(this).text();
             });
             $("#QueueEntity_LoadId").val(loadId);

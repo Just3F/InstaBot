@@ -57,11 +57,6 @@ namespace InstaBot.Web.Pages.Queue
             queueEntity.IsActive = QueueEntity.IsActive;
             queueEntity.Notes = QueueEntity.Notes;
 
-            //_context.Attach(QueueEntity).State = EntityState.Modified;
-            //_context.Entry(QueueEntity).Property(x => x.LastActivity).IsModified = false;
-            //_context.Entry(QueueEntity).Property(x => x.LoginDataId).IsModified = false;
-            //_context.Entry(QueueEntity).Property(x => x.LoginData).IsModified = false;
-
             try
             {
                 await _context.SaveChangesAsync();
