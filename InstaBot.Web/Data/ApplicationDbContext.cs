@@ -1,14 +1,14 @@
-﻿using InstaBot.Common;
+﻿using InstaBot.Web.EntityModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace InstaBot.Web.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Queue> Queues { get; set; }
-        public DbSet<UserActivityHistory> UserActivityHistories { get; set; }
+        public DbSet<LoginDataEntity> LoginData { get; set; }
+        public DbSet<QueueEntity> Queues { get; set; }
+        public DbSet<UserActivityHistoryEntity> UserActivityHistories { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

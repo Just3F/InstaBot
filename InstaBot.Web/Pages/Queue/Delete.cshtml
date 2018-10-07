@@ -1,0 +1,79 @@
+﻿@page
+@model InstaBot.Web.Pages.Queue.DeleteModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>QueueEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.QueueType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.QueueType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.QueueState)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.QueueState)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.DelayInSeconds)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.DelayInSeconds)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.LastActivity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.LastActivity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.LoadId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.LoadId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.IsActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.IsActive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.Notes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.Notes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueEntity.LoginData)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueueEntity.LoginData.Id)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="QueueEntity.Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
+</body>
+</html>

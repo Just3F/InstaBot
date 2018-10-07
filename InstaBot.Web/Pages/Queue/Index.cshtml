@@ -1,0 +1,87 @@
+﻿@page
+@model InstaBot.Web.Pages.Queue.IndexModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        <a asp-page="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].LoginData)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].QueueType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].QueueState)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].DelayInSeconds)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].LastActivity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].LoadId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QueueEntity[0].Notes)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.QueueEntity)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoginData.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QueueType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QueueState)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DelayInSeconds)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastActivity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoadId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+<script>
+    $(".table").DataTable();
+</script>

@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using InstaBot.Web.Data;
+using InstaBot.Web.EntityModels;
 
 namespace InstaBot.Web.Pages.Queue
 {
@@ -14,12 +19,12 @@ namespace InstaBot.Web.Pages.Queue
             _context = context;
         }
 
-        public IList<Common.Queue> Queue { get;set; }
+        public IList<QueueEntity> QueueEntity { get;set; }
 
         public async Task OnGetAsync()
         {
-            Queue = await _context.Queues
-                .Include(q => q.User).ToListAsync();
+            QueueEntity = await _context.Queues
+                .Include(q => q.LoginData).ToListAsync();
         }
     }
 }

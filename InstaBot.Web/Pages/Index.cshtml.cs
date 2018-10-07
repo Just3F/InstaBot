@@ -1,25 +1,33 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using InstaBot.Common;
 using InstaBot.Web.Data;
+using InstaBot.Web.EntityModels;
+using InstaBot.Web.Services;
+using InstaBot.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace InstaBot.Web.Pages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IQueueService _queueService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public IndexModel(ApplicationDbContext dbContext)
+        public IndexModel(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
-            _dbContext = dbContext;
+            _queueService = new QueueService(db);
+            _userManager = userManager;
         }
-        public IList<Common.Queue> Queues { get; set; }
+        public IEnumerable<QueueEntity> Queues { get; set; }
 
         public async Task OnGetAsync()
         {
-            Queues = await _dbContext.Queues.Include(x=>x.User).ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Queues = await _queueService.GetQueuesForUser(userId);
         }
     }
 }

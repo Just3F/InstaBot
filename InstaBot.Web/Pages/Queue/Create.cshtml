@@ -1,0 +1,61 @@
+﻿@page
+@using InstaBot.Common.Enums
+@model InstaBot.Web.Pages.Queue.CreateModel
+
+
+<h4>QueueEntity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="QueueEntity.QueueType" class="control-label"></label>
+                <select asp-for="QueueEntity.QueueType" asp-items="Html.GetEnumSelectList<QueueType>()" class="form-control"></select>
+                <span asp-validation-for="QueueEntity.QueueType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QueueEntity.QueueState" class="control-label"></label>
+                <select asp-for="QueueEntity.QueueState" asp-items="Html.GetEnumSelectList<QueueState>()" class="form-control"></select>
+                <span asp-validation-for="QueueEntity.QueueState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QueueEntity.DelayInSeconds" class="control-label"></label>
+                <input asp-for="QueueEntity.DelayInSeconds" min="60" class="form-control" />
+                <span asp-validation-for="QueueEntity.DelayInSeconds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QueueEntity.LoadId" class="control-label"></label>
+                <input asp-for="QueueEntity.LoadId" class="form-control" />
+                <span asp-validation-for="QueueEntity.LoadId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="QueueEntity.IsActive" checked/> Is Active
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="QueueEntity.Notes" class="control-label"></label>
+                <input asp-for="QueueEntity.Notes" class="form-control" />
+                <span asp-validation-for="QueueEntity.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QueueEntity.LoginDataId" class="control-label"></label>
+                <select asp-for="QueueEntity.LoginDataId" class ="form-control" asp-items="ViewBag.LoginDataId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

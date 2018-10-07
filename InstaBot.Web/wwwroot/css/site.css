@@ -7,3 +7,7 @@
     line-height: 1.428571429;
     border-radius: 15px;
 }
+
+.table tr td:last-child {
+    width: 160px;
+}
