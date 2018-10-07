@@ -37,7 +37,7 @@ namespace InstaBot.Web.Pages.Queue
             {
                 return NotFound();
             }
-           ViewData["LoginDataId"] = new SelectList(_context.LoginData, "Id", "Id");
+            ViewData["LoginDataId"] = new SelectList(_context.LoginData, "Id", "Id");
             return Page();
         }
 
@@ -48,7 +48,19 @@ namespace InstaBot.Web.Pages.Queue
                 return Page();
             }
 
-            _context.Attach(QueueEntity).State = EntityState.Modified;
+            var queueEntity = _context.Queues.Single(x => x.Id == QueueEntity.Id);
+            queueEntity.QueueType = QueueEntity.QueueType;
+            queueEntity.QueueState = QueueEntity.QueueState;
+            queueEntity.DelayInSeconds = QueueEntity.DelayInSeconds;
+            queueEntity.LastActivity = QueueEntity.LastActivity;
+            queueEntity.LoadId = QueueEntity.LoadId;
+            queueEntity.IsActive = QueueEntity.IsActive;
+            queueEntity.Notes = QueueEntity.Notes;
+
+            //_context.Attach(QueueEntity).State = EntityState.Modified;
+            //_context.Entry(QueueEntity).Property(x => x.LastActivity).IsModified = false;
+            //_context.Entry(QueueEntity).Property(x => x.LoginDataId).IsModified = false;
+            //_context.Entry(QueueEntity).Property(x => x.LoginData).IsModified = false;
 
             try
             {

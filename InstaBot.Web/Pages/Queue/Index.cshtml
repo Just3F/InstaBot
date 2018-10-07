@@ -1,9 +1,6 @@
 ﻿@page
 @model InstaBot.Web.Pages.Queue.IndexModel
 
-<!DOCTYPE html>
-
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel">
@@ -11,76 +8,78 @@
                 <h3 class="panel-title">Table of Tasks</h3>
             </div>
             <div class="panel-body">
-                <button asp-page="Create" type="button" class="btn btn-success"><i class="fa fa-plus-square"></i> Add New </button>
+                <a asp-page="Create" type="button" class="btn btn-success"><i class="fa fa-plus-square"></i> Add New </a>
                 <br />
                 <br />
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].LoginData)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].QueueType)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].QueueState)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].DelayInSeconds)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].LastActivity)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].LoadId)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].IsActive)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.QueueEntity[0].Notes)
-                            </th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.QueueEntity)
-                        {
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LoginData.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.QueueType)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.QueueState)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DelayInSeconds)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LastActivity)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LoadId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Notes)
-                                </td>
-                                <td>
-                                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].LoginData)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].QueueType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].QueueState)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].DelayInSeconds)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].LastActivity)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].LoadId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].IsActive)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QueueEntity[0].Notes)
+                                </th>
+                                <th>Actions</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.QueueEntity)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LoginData.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.QueueType)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.QueueState)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DelayInSeconds)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastActivity)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LoadId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsActive)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Notes)
+                                    </td>
+                                    <td>
+                                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

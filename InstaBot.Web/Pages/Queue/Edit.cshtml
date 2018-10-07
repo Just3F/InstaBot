@@ -1,14 +1,10 @@
 ﻿@page
+@using InstaBot.Common.Enums
+@using InstaBot.Web.EntityModels
 @model InstaBot.Web.Pages.Queue.EditModel
 
 <!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
 
 <h4>QueueEntity</h4>
 <hr />
@@ -19,17 +15,17 @@
             <input type="hidden" asp-for="QueueEntity.Id" />
             <div class="form-group">
                 <label asp-for="QueueEntity.QueueType" class="control-label"></label>
-                <select asp-for="QueueEntity.QueueType" class="form-control"></select>
+                <select asp-for="QueueEntity.QueueType" asp-items="Html.GetEnumSelectList<QueueType>()" class="form-control"></select>
                 <span asp-validation-for="QueueEntity.QueueType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="QueueEntity.QueueState" class="control-label"></label>
-                <select asp-for="QueueEntity.QueueState" class="form-control"></select>
+                <select asp-for="QueueEntity.QueueState" asp-items="Html.GetEnumSelectList<QueueState>()" class="form-control"></select>
                 <span asp-validation-for="QueueEntity.QueueState" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="QueueEntity.DelayInSeconds" class="control-label"></label>
-                <input asp-for="QueueEntity.DelayInSeconds" class="form-control" />
+                <input asp-for="QueueEntity.DelayInSeconds" class="form-control" min="60"/>
                 <span asp-validation-for="QueueEntity.DelayInSeconds" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,7 +35,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="QueueEntity.LoadId" class="control-label"></label>
-                <input asp-for="QueueEntity.LoadId" class="form-control" />
+                <input type="hidden" asp-for="QueueEntity.LoadId" />
+                <select class="form-control load-id-tags" multiple="multiple"></select>
                 <span asp-validation-for="QueueEntity.LoadId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -51,27 +48,42 @@
             </div>
             <div class="form-group">
                 <label asp-for="QueueEntity.Notes" class="control-label"></label>
-                <input asp-for="QueueEntity.Notes" class="form-control" />
+                <textarea asp-for="QueueEntity.Notes" class="form-control"></textarea>
                 <span asp-validation-for="QueueEntity.Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="QueueEntity.LoginDataId" class="control-label"></label>
-                <select asp-for="QueueEntity.LoginDataId" class="form-control" asp-items="ViewBag.LoginDataId"></select>
-                <span asp-validation-for="QueueEntity.LoginDataId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index" class="btn btn-default">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }
-</body>
-</html>
+<script>
+    $(function () {
+        var loadIdTags = $("#QueueEntity_LoadId").val().split(" ");
+        var loadIds = $(".load-id-tags").select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            data: loadIdTags
+        });
+        loadIds.val(loadIdTags).trigger("change");
+
+        $(".btn").click(function (e) {
+            var loadId = '';
+
+            $(".load-id-tags option:selected").each(function (index) {
+                debugger;
+                loadId += (index == 0 ? '' : ' ') + $(this).text();
+            });
+            $("#QueueEntity_LoadId").val(loadId);
+        });
+    });
+</script>
