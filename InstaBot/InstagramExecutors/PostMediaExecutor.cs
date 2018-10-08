@@ -8,8 +8,7 @@ using InstaSharper.Classes;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using InstaBot.Common;
-using InstaBot.Common.Enums;
+using InstaBot.Service.Enums;
 using InstaSharper.Classes.Models;
 
 namespace InstaBot.Service.InstagramExecutors
@@ -19,35 +18,35 @@ namespace InstaBot.Service.InstagramExecutors
         public PostMediaExecutor(IInstaApi instaApi)
             : base(instaApi) { }
 
-        public async Task Execute(Queue queue, InstaBotContext db)
+        public async Task Execute(QueueEntity queueEntity, InstaBotContext db)
         {
-            var allGroups = queue.LoadId.Split(' ');
+            var allGroups = queueEntity.LoadId.Split(' ');
             bool isMediaPosted = false;
             foreach (var group in allGroups)
             {
                 var instaMediaList = await _instaApi.GetUserMediaAsync(group, PaginationParameters.MaxPagesToLoad(0));
                 InstaMedia firstMedia = instaMediaList?.Value?.FirstOrDefault();
 
-                if (firstMedia != null && firstMedia.MediaType != InstaMediaType.Video && !IsAlreadyPosted(firstMedia.InstaIdentifier, queue.User.Name, db))
+                if (firstMedia != null && firstMedia.MediaType != InstaMediaType.Video && !IsAlreadyPosted(firstMedia.InstaIdentifier, queueEntity.LoginData.Name, db))
                 {
-                    var caption = GetCaption(queue, firstMedia);
+                    var caption = GetCaption(queueEntity, firstMedia);
                     isMediaPosted = await PostMediaAsync(firstMedia, caption);
                 }
 
                 if (isMediaPosted || group.Equals(allGroups.LastOrDefault()))
                 {
-                    await UpdateQueueLastActivityAsync(queue, db);
-                    await AddFinishedQueuToHistory(firstMedia.InstaIdentifier, queue, db);
-                    Console.WriteLine($"PostMediaExecutor for {queue.User.Name}");
+                    await UpdateQueueLastActivityAsync(queueEntity, db);
+                    await AddFinishedQueuToHistory(firstMedia.InstaIdentifier, queueEntity, db);
+                    Console.WriteLine($"PostMediaExecutor for {queueEntity.LoginData.Name}");
                     return;
                 }
             }
         }
 
-        private string GetCaption(Queue queue, InstaMedia instaMedia)
+        private string GetCaption(QueueEntity queueEntity, InstaMedia instaMedia)
         {
             var caption = "";
-            caption = queue.Notes ?? instaMedia.Caption.Text;
+            caption = queueEntity.Notes ?? instaMedia.Caption.Text;
 
             return caption;
         }
@@ -63,11 +62,11 @@ namespace InstaBot.Service.InstagramExecutors
             return postResult;
         }
 
-        public async Task AddFinishedQueuToHistory(string postIdentifier, Queue queue, InstaBotContext db)
+        public async Task AddFinishedQueuToHistory(string postIdentifier, QueueEntity queueEntity, InstaBotContext db)
         {
-            db.UserActivityHistories.Add(new UserActivityHistory
+            db.UserActivityHistories.Add(new UserActivityHistoryEntity
             {
-                Queue = queue,
+                QueueEntity = queueEntity,
                 CreatedOn = DateTime.UtcNow,
                 PostedImageURI = postIdentifier
             });
@@ -136,7 +135,7 @@ namespace InstaBot.Service.InstagramExecutors
 
         private bool IsAlreadyPosted(string id, string userName, InstaBotContext db)
         {
-            return db.UserActivityHistories.Any(x => x.PostedImageURI == id && x.Queue.QueueType == QueueType.PostMedia && x.Queue.User.Name == userName);
+            return db.UserActivityHistories.Any(x => x.PostedImageURI == id && x.QueueEntity.QueueType == QueueType.PostMedia && x.QueueEntity.LoginData.Name == userName);
         }
     }
 }

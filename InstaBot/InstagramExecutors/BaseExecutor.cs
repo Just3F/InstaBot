@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using InstaBot.Common;
 using InstaBot.Service.DataBaseModels;
 using InstaSharper.API;
 
@@ -14,9 +13,9 @@ namespace InstaBot.Service.InstagramExecutors
             _instaApi = instaApi;
         }
 
-        protected async Task UpdateQueueLastActivityAsync(Queue queue, InstaBotContext db)
+        protected async Task UpdateQueueLastActivityAsync(QueueEntity queueEntity, InstaBotContext db)
         {
-            queue.LastActivity = DateTime.UtcNow;
+            queueEntity.LastActivity = DateTime.UtcNow;
             await db.SaveChangesAsync();
         }
     }

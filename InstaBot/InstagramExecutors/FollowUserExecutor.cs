@@ -13,12 +13,12 @@ namespace InstaBot.Service.InstagramExecutors
         public FollowUserExecutor(IInstaApi instaApi)
             : base(instaApi) { }
 
-        public async Task Execute(Queue queue, InstaBotContext db)
+        public async Task Execute(QueueEntity queueEntity, InstaBotContext db)
         {
             long userId = 0;
-            if (queue.LoadId != null)
+            if (queueEntity.LoadId != null)
             {
-                userId = await GetUserIdByTag(queue, userId);
+                userId = await GetUserIdByTag(queueEntity, userId);
             }
             else
             {
@@ -28,8 +28,8 @@ namespace InstaBot.Service.InstagramExecutors
             if (userId != 0)
             {
                 await _instaApi.FollowUserAsync(userId);
-                await UpdateQueueLastActivityAsync(queue, db);
-                Console.WriteLine("FollowUserExecutor for " + queue.User.Name);
+                await UpdateQueueLastActivityAsync(queueEntity, db);
+                Console.WriteLine("FollowUserExecutor for " + queueEntity.LoginData.Name);
             }
         }
 
@@ -42,9 +42,9 @@ namespace InstaBot.Service.InstagramExecutors
             return userId;
         }
 
-        private async Task<long> GetUserIdByTag(Queue queue, long userId)
+        private async Task<long> GetUserIdByTag(QueueEntity queueEntity, long userId)
         {
-            var mediasByTag = await _instaApi.GetTagFeedAsync(queue.LoadId, PaginationParameters.MaxPagesToLoad(0));
+            var mediasByTag = await _instaApi.GetTagFeedAsync(queueEntity.LoadId, PaginationParameters.MaxPagesToLoad(0));
             var user = mediasByTag.Value.Medias.Where(x => !x.User.FriendshipStatus.Following && !x.User.IsPrivate).Select(x => x.User).FirstOrDefault();
             if (user != null)
                 userId = user.Pk;

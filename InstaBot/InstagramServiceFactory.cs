@@ -1,4 +1,4 @@
-﻿using InstaBot.Common.Enums;
+﻿using InstaBot.Service.Enums;
 using InstaBot.Service.InstagramExecutors;
 using InstaSharper.API;
 

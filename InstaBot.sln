@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstaBot.Service", "InstaBo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstaBot.Web", "InstaBot.Web\InstaBot.Web.csproj", "{BDC7E1E7-ACCE-4BE1-86F3-4766E032315B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaBot.Common", "ClassLibrary1\InstaBot.Common.csproj", "{3035EDFF-02E5-437F-8C88-9924CC0CE6AE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{BDC7E1E7-ACCE-4BE1-86F3-4766E032315B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDC7E1E7-ACCE-4BE1-86F3-4766E032315B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDC7E1E7-ACCE-4BE1-86F3-4766E032315B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3035EDFF-02E5-437F-8C88-9924CC0CE6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3035EDFF-02E5-437F-8C88-9924CC0CE6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3035EDFF-02E5-437F-8C88-9924CC0CE6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3035EDFF-02E5-437F-8C88-9924CC0CE6AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

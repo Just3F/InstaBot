@@ -4,9 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using InstaBot.Common;
-using InstaBot.Common.Enums;
 using InstaBot.Service.DataBaseModels;
+using InstaBot.Service.Enums;
 using InstaBot.Service.Models;
 using InstaSharper.API;
 using InstaSharper.API.Builder;
@@ -50,12 +49,12 @@ namespace InstaBot.Service
                 var activeQueues = await db.Queues
                     .Where(x => x.LastActivity < DateTime.UtcNow - TimeSpan.FromSeconds(x.DelayInSeconds) &&
                                 x.QueueState == QueueState.InProgress)
-                    .Include(x => x.User)
+                    .Include(x => x.LoginData)
                     .ToListAsync();
 
                 foreach (var queue in activeQueues)
                 {
-                    if (await LoginAsync(queue.User.Name, queue.User.Password))
+                    if (await LoginAsync(queue.LoginData.Name, queue.LoginData.Password))
                     {
                         switch (queue.QueueType)
                         {
@@ -83,7 +82,7 @@ namespace InstaBot.Service
             }
         }
 
-        private async Task ExecuteQueueFollowRecomendations(Queue queue, InstaBotContext db)
+        private async Task ExecuteQueueFollowRecomendations(QueueEntity queueEntity, InstaBotContext db)
         {
             var top = await _api.GetExploreFeedAsync(PaginationParameters.MaxPagesToLoad(0));
             var firstRecomendation = top.Value.Medias.FirstOrDefault();
@@ -91,14 +90,14 @@ namespace InstaBot.Service
             await _api.FollowUserAsync(firstRecomendation.User.Pk);
 
             Console.WriteLine("Followed for user - " + firstRecomendation.User.Pk);
-            queue.LastActivity = DateTime.UtcNow;
+            queueEntity.LastActivity = DateTime.UtcNow;
             await db.SaveChangesAsync();
             Thread.Sleep(1000);
         }
 
-        private async Task ExecuteQueueLikePhotosAsync(Queue queue, InstaBotContext db)
+        private async Task ExecuteQueueLikePhotosAsync(QueueEntity queueEntity, InstaBotContext db)
         {
-            var tags = queue.LoadId.Split(' ');
+            var tags = queueEntity.LoadId.Split(' ');
             foreach (var tag in tags)
             {
                 var top = await _api.GetExploreFeedAsync(PaginationParameters.MaxPagesToLoad(0));
@@ -108,7 +107,7 @@ namespace InstaBot.Service
                 //var media = foundPhotos.Value.Medias.FirstOrDefault();
 
                 var isPhotoAlreadyLiked = db.UserActivityHistories.Any(x =>
-                x.PostedImageURI == media.InstaIdentifier && x.Queue.QueueType == QueueType.LikePhoto);
+                x.PostedImageURI == media.InstaIdentifier && x.QueueEntity.QueueType == QueueType.LikePhoto);
 
                 if (isPhotoAlreadyLiked)
                     break;
@@ -128,10 +127,10 @@ namespace InstaBot.Service
                 }
 
 
-                queue.LastActivity = DateTime.UtcNow;
-                db.UserActivityHistories.Add(new UserActivityHistory
+                queueEntity.LastActivity = DateTime.UtcNow;
+                db.UserActivityHistories.Add(new UserActivityHistoryEntity
                 {
-                    Queue = queue,
+                    QueueEntity = queueEntity,
                     CreatedOn = DateTime.UtcNow,
                     PostedImageURI = media.InstaIdentifier,
                 });
@@ -141,9 +140,9 @@ namespace InstaBot.Service
             }
         }
 
-        private async Task ExecuteQueuePostPhotosAsync(Queue queue, InstaBotContext db)
+        private async Task ExecuteQueuePostPhotosAsync(QueueEntity queueEntity, InstaBotContext db)
         {
-            var allGroups = queue.LoadId.Split(' ');
+            var allGroups = queueEntity.LoadId.Split(' ');
             foreach (var group in allGroups)
             {
                 var photosForPost = await _api.GetUserMediaAsync(group, PaginationParameters.MaxPagesToLoad(0));
@@ -164,7 +163,7 @@ namespace InstaBot.Service
                         photoPost.PhotoURI = firstPhotoForPost.Carousel.FirstOrDefault().Images.FirstOrDefault().URI;
                     }
 
-                    var isPhotoPosted = await PostPhotoAsync(queue, db, photoPost);
+                    var isPhotoPosted = await PostPhotoAsync(queueEntity, db, photoPost);
 
                     if (isPhotoPosted)
                     {
@@ -174,10 +173,10 @@ namespace InstaBot.Service
                     {
                         if (allGroups.LastOrDefault() == group)
                         {
-                            queue.LastActivity = DateTime.UtcNow;
-                            db.UserActivityHistories.Add(new UserActivityHistory
+                            queueEntity.LastActivity = DateTime.UtcNow;
+                            db.UserActivityHistories.Add(new UserActivityHistoryEntity
                             {
-                                Queue = queue,
+                                QueueEntity = queueEntity,
                                 CreatedOn = DateTime.UtcNow
                             });
                             await db.SaveChangesAsync();
@@ -188,10 +187,10 @@ namespace InstaBot.Service
                 {
                     if (allGroups.LastOrDefault() == group)
                     {
-                        queue.LastActivity = DateTime.UtcNow;
-                        db.UserActivityHistories.Add(new UserActivityHistory
+                        queueEntity.LastActivity = DateTime.UtcNow;
+                        db.UserActivityHistories.Add(new UserActivityHistoryEntity
                         {
-                            Queue = queue,
+                            QueueEntity = queueEntity,
                             CreatedOn = DateTime.UtcNow
                         });
                         await db.SaveChangesAsync();
@@ -200,21 +199,21 @@ namespace InstaBot.Service
             }
         }
 
-        private async Task<bool> PostPhotoAsync(Queue queue, InstaBotContext db, PhotoPost photoPost)
+        private async Task<bool> PostPhotoAsync(QueueEntity queueEntity, InstaBotContext db, PhotoPost photoPost)
         {
             var imageURI = photoPost.PhotoURI;
             var success = false;
             var isPhotoAlreadyPosted = db.UserActivityHistories.Any(x =>
-                x.PostedImageURI == imageURI && x.Queue.QueueType == QueueType.PostMedia);
+                x.PostedImageURI == imageURI && x.QueueEntity.QueueType == QueueType.PostMedia);
 
             if (!isPhotoAlreadyPosted)
             {
                 await UploadPhotoAsync(photoPost.Caption, imageURI);
 
-                queue.LastActivity = DateTime.UtcNow;
-                db.UserActivityHistories.Add(new UserActivityHistory
+                queueEntity.LastActivity = DateTime.UtcNow;
+                db.UserActivityHistories.Add(new UserActivityHistoryEntity
                 {
-                    Queue = queue,
+                    QueueEntity = queueEntity,
                     CreatedOn = DateTime.UtcNow,
                     PostedImageURI = imageURI,
                 });

@@ -13,17 +13,17 @@ namespace InstaBot.Service.InstagramExecutors
         public LikeExecutor(IInstaApi instaApi)
             : base(instaApi) { }
 
-        public async Task Execute(Queue queue, InstaBotContext db)
+        public async Task Execute(QueueEntity queueEntity, InstaBotContext db)
         {
-            string tag = queue.LoadId;
+            string tag = queueEntity.LoadId;
             var instaTagFeed = await _instaApi.GetTagFeedAsync(tag, PaginationParameters.MaxPagesToLoad(0));
             var lastPost = instaTagFeed.Value?.Medias?.FirstOrDefault();
 
             if (instaTagFeed.Succeeded && lastPost != null)
             {
                 await _instaApi.LikeMediaAsync(lastPost.InstaIdentifier);
-                await UpdateQueueLastActivityAsync(queue, db);
-                Console.WriteLine("LikeExecutor for " + queue.User.Name);
+                await UpdateQueueLastActivityAsync(queueEntity, db);
+                Console.WriteLine("LikeExecutor for " + queueEntity.LoginData.Name);
             }
         }
     }
