@@ -23,7 +23,7 @@ namespace InstaBot.Web.Pages.Queue
 
         public IActionResult OnGet()
         {
-            ViewData["LoginDataId"] = new SelectList(_context.LoginData, "Id", "Id");
+            ViewData["LoginDataId"] = new SelectList(_context.LoginData, "Id", "Name");
             return Page();
         }
 
