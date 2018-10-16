@@ -14,60 +14,41 @@
 <div>
     <h4>QueueEntity</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.QueueType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.QueueType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.QueueState)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.QueueState)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.DelayInSeconds)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.DelayInSeconds)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.LastActivity)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.LastActivity)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.LoadId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.LoadId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.IsActive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.IsActive)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.Notes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.Notes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueueEntity.LoginData)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueueEntity.LoginData.Id)
-        </dd>
-    </dl>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Last activity(min)</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.UserActivityHistories)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => (DateTime.UtcNow - item.CreatedOn).TotalMinutes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostedImageURI)
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.QueueEntity.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
 </body>
 </html>
+<script>
+    $(".table").DataTable({
+        "order": [[1, "asc"]]
+    });
+</script>

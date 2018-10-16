@@ -39,7 +39,12 @@ namespace InstaBot.Service
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
-                            //throw;
+                            db.UserActivityHistories.Add(new UserActivityHistoryEntity
+                            {
+                                CreatedOn = DateTime.UtcNow,
+                                QueueId = queue.Id,
+                                PostedImageURI = e.Message
+                            });
                         }
                     }
                 }

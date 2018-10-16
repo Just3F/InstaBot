@@ -19,7 +19,7 @@ namespace InstaBot.Web.Pages.Queue
             _context = context;
         }
 
-        public QueueEntity QueueEntity { get; set; }
+        public IEnumerable<UserActivityHistoryEntity> UserActivityHistories { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,10 +28,10 @@ namespace InstaBot.Web.Pages.Queue
                 return NotFound();
             }
 
-            QueueEntity = await _context.Queues
-                .Include(q => q.LoginData).FirstOrDefaultAsync(m => m.Id == id);
+            UserActivityHistories = await _context.UserActivityHistories
+                .Include(q => q.Queue).Where(m => m.QueueId == id).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
-            if (QueueEntity == null)
+            if (UserActivityHistories == null)
             {
                 return NotFound();
             }

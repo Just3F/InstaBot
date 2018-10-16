@@ -36,7 +36,7 @@ namespace InstaBot.Service.InstagramExecutors
                 if (isMediaPosted || group.Equals(allGroups.LastOrDefault()))
                 {
                     await UpdateQueueLastActivityAsync(queueEntity, db);
-                    await AddFinishedQueuToHistory(firstMedia.InstaIdentifier, queueEntity, db);
+                    await AddFinishedQueuToHistory(firstMedia?.Images?.FirstOrDefault()?.URI, queueEntity, db);
                     Console.WriteLine($"PostMediaExecutor for {queueEntity.LoginData.Name}");
                     return;
                 }
