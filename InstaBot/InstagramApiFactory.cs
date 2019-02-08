@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -23,7 +24,6 @@ namespace InstaBot.Service
 
         public static async Task<IInstaApi> GetInstaApiAsync(InstagramUser user)
         {
-            var test = user.GetHashCode();
             IInstaApi instaApi = apiCollection.GetValueOrDefault(user, null);
 
             if (instaApi == null)
@@ -31,17 +31,25 @@ namespace InstaBot.Service
                 instaApi = await TryToLoginAsync(user);
                 apiCollection.Add(user, instaApi);
             }
+            else
+            {
+                if (!instaApi.IsUserAuthenticated)
+                {
+                    apiCollection.Remove(user);
+                    //await GetInstaApiAsync(user);
+                }
+            }
 
             return instaApi;
         }
 
         private static async Task<IInstaApi> TryToLoginAsync(InstagramUser user)
         {
-            var address = "217.170.219.6";
-            var port = "41258";
-            var httpHndler = new HttpClientHandler
+            var address = "86.57.159.118";
+            var port = "33620";
+            var httpHandler = new HttpClientHandler
             {
-                Proxy = new WebProxy(string.Format("{0}:{1}", address, port), false),
+                Proxy = new WebProxy($"{address}:{port}", false),
                 UseProxy = true
                 //PreAuthenticate = true,
                 //UseDefaultCredentials = false,
@@ -49,8 +57,9 @@ namespace InstaBot.Service
                 //    proxyServerSettings.Password),
             };
 
+
             var api = InstaApiBuilder.CreateBuilder()
-                //.UseHttpClientHandler(httpHndler)
+                //.UseHttpClientHandler(httpHandler)
                 .SetUser(new UserSessionData { UserName = user.UserName, Password = user.Password })
                 .UseLogger(new DebugLogger(LogLevel.Exceptions)).Build();
             var loginRequest = await api.LoginAsync();

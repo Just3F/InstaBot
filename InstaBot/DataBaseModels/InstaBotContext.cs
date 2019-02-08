@@ -10,7 +10,7 @@ namespace InstaBot.Service.DataBaseModels
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=SQL6006.site4now.net;Initial Catalog=DB_A418ED_instabot1;User Id=DB_A418ED_instabot1_admin;Password=Gfhjkm63934710;");
+            optionsBuilder.UseSqlServer(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=DB_instabot;");
         }
     }
 }
